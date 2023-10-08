@@ -1,1 +1,2 @@
-print('iihyunsuk')
+import sys
+print(sys.version_info)
