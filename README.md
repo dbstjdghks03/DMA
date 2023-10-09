@@ -18,12 +18,12 @@ version_test.py 실행
 ### pre-commit 세팅 <중요!!! git clone 이후에 반드시 진행할 것>
 
 pre-commit 세팅은
-commit을 하기 전 commit할 내용이 '설정된 코드 규정'을 잘 따르고 있는지를 자동으로 확인, 수정하게 해주는 세팅이다.
+commit을 하기 전 commit할 내용이 '설정된 코드 규정'을 어긴 작업 내용은 커밋하지 못하도록, 코드가 코드규정을 잘 지키고 있는지 자동으로 확인, 지적, 수정해주는 사이트다.
 ('설정된 코드 규정'은 `.pre-commit-config.yaml`에 작성해두었음. __수정X요함__)
 
-변경 내용이 설정된 코드 규정에 어긋나는 경우 commit을 방지해주며, 어긋난 부분을 고쳐준다.
+변경 내용이 설정된 코드 규정에 어긋나는 경우 commit을 방지해주며, 어긋난 부분을 지적해준다.
 
-> 따라서 commit을 시도했는데 설정해둔 pre-commit에 의해 commit이 되지 않은 경우, pre-commit이 고쳐준 내용까지 git add를 하여 다시 한번 commit해주면 된다.
+> 따라서 commit을 시도했는데 설정해둔 pre-commit에 의해 commit이 되지 않은 경우, 지적해준 내용을 고치고, 또 pre-commit이 자동으로 고쳐준 내용까지 git add를 하여 다시 한번 commit해주면 된다.
 
 > pre-commit 세팅 방법은 다음과 같음.
 

@@ -1,0 +1,25 @@
+{
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "doc"
+    ],
+    "typingsPath": "src/typestubs",
+    "reportTypeshedErrors": true,
+    "reportMissingImports": false,
+    "pythonVersion": "3.9",
+    "pythonPlatform": "Darwin",
+    "executionEnvironments": [
+        {
+            "root": "src/sdk",
+            "pythonVersion": "3.9",
+            "extraPaths": [
+                "src/backend"
+            ]
+        },
+        {
+            "root": "src"
+        }
+    ]
+}
