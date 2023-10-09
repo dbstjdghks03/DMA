@@ -8,6 +8,8 @@
 
 python version 3.9.12
 
+데이터셋은 Project1_dataset 이름 그대로 각자 작업 폴더에 복붙
+
 ### 버전 테스트 <중요!!! git clone 이후에 반드시 진행할 것>
 
 ```shell
