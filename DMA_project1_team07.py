@@ -14,7 +14,7 @@ def requirement1(host, user, password):
     print("Creating schema...")
 
     # TODO: WRITE CODE HERE
-
+    cursor.execute("CREATE DATABASE IF NOT EXISTS DMA_team07")
     # TODO: WRITE CODE HERE
     cursor.close()
 
