@@ -184,7 +184,7 @@ def requirement4(host, user, password):
 # TODO: REPLACE THE VALUES OF FOLLOWING VARIABLES
 host = "localhost"
 user = "root"
-password = "m@ysh201836"
+password = ""
 directory_in = ""
 
 
