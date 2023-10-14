@@ -27,6 +27,37 @@ def requirement2(host, user, password):
     print("Creating tables...")
 
     # TODO: WRITE CODE HERE
+    cursor.execute("USE DMA_team07")
+    cursor.execute("DROP TABLE USER")
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS USER(
+    Uid INT NOT NULL,
+    Unickname VARCHAR(20), 
+    PRIMARY KEY (Uid)) ;               
+                   """)
+    filepath = '/Users/yunseonghwan/Desktop/2023-2/데이터 관리와 분석/DMA_project1/Project1_dataset'+'/'+'user.csv'
+
+    with open(filepath, 'r', encoding='utf-8') as csv_data:
+        data_to_insert = []
+        for row in csv_data.readlines()[1:]:
+            row = row.strip().split(',')
+            formatted_row = []
+
+            for idx, data in enumerate(row):
+                if data == '':
+                    formatted_row.append(None)  # None을 사용하여 NULL 대체
+                elif idx in [0]:
+                    formatted_row.append(int(data))
+                else:
+                    formatted_row.append(data)
+
+            data_to_insert.append(tuple(formatted_row))
+
+    insert_query = "INSERT INTO USER (Uid, Unickname) VALUES (%s, %s)"
+    cursor.executemany(insert_query, data_to_insert)
+    cnx.commit()
+
+    print("Data inserted successfully!")
 
     # TODO: WRITE CODE HERE
     cursor.close()
@@ -61,12 +92,13 @@ def requirement4(host, user, password):
 # TODO: REPLACE THE VALUES OF FOLLOWING VARIABLES
 host = "localhost"
 user = "root"
-password = ""
+password = "m@ysh201836"
 directory_in = ""
 
 
 requirement1(host=host, user=user, password=password)
 requirement2(host=host, user=user, password=password)
+'''
 requirement3(host=host, user=user, password=password, directory=directory_in)
 requirement4(host=host, user=user, password=password)
-print("Done!")
+print("Done!")'''
