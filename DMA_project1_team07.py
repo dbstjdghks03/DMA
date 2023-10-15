@@ -239,6 +239,8 @@ def requirement3(host, user, password, directory):
                         else:
                             formatted_row.append(data)
 
+                    # cursor.execute(self.insert_sql, tuple(formatted_row))
+
                     tuples_to_insert.append(tuple(formatted_row))
                     # tuples_top_insert가 10만 개 쌓일 때마다 executemany해준다
                     count += 1
@@ -346,6 +348,11 @@ def requirement3(host, user, password, directory):
         table_loader = TableLoader(*data)
         table_loader.load_data()
 
+    # 잘 들어갔는지 테스트용
+    # cursor.execute("SELECT * FROM review;")
+    # for row in cursor:
+    #     print(row)
+
     # TODO: WRITE CODE HERE
     cursor.close()
 
@@ -390,7 +397,7 @@ def requirement4(host, user, password):
 # TODO: REPLACE THE VALUES OF FOLLOWING VARIABLES
 host = "localhost"
 user = "root"
-password = ""
+password = "m@ysh201836"
 directory_in = "./Project1_dataset/"
 
 
