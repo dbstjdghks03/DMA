@@ -11,3 +11,4 @@
 Project1_dataset
 csv_data_test.py
 .vscode
+.flake8
