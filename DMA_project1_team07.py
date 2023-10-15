@@ -14,7 +14,7 @@ def requirement1(host, user, password):
     print("Creating schema...")
 
     # TODO: WRITE CODE HERE
-    cursor.execute("CREATE DATABASE IF NOT EXISTS DMA_team07")
+    cursor.execute("CREATE DATABASE IF NOT EXISTS DMA_team07;")
     # TODO: WRITE CODE HERE
     cursor.close()
 
@@ -35,20 +35,25 @@ def requirement2(host, user, password):
         def __init__(self, cnx, cursor):
             self.cnx = cnx
             self.cursor = cursor
-            self.file_doc = '/Users/yunseonghwan/Desktop/2023-2/데이터 관리와 분석/DMA_project1/Project1_dataset' + '/'
-            self.files = {'user_path': self.file_doc + 'user.csv',
-                          'seller_path': self.file_doc + 'seller.csv',
-                          'seller_user_path': self.file_doc + 'seller_user.csv',
-                          'review_path': self.file_doc + 'review.csv',
-                          'scrap_path': self.file_doc + 'scrap.csv',
-                          'product_path': self.file_doc + 'product.csv',
-                          'product_delivery_path': self.file_doc + 'product_delivery.csv',
-                          'delivery_method_path': self.file_doc + 'delivery_method.csv',
-                          'follow_path': self.file_doc + 'follow.csv',
-                          'cs_team_path': self.file_doc + 'cs_team.csv',
-                          'category_path': self.file_doc + 'category.csv',
-                          'brand_seller_path': self.file_doc + 'brand_seller.csv',
-                          'brand_path': self.file_doc + 'brand.csv'}
+            self.file_doc = (
+                "/Users/yunseonghwan/Desktop/2023-2/데이터 관리와 분석/DMA_project1/Project1_dataset"
+                + "/"
+            )
+            self.files = {
+                "user_path": self.file_doc + "user.csv",
+                "seller_path": self.file_doc + "seller.csv",
+                "seller_user_path": self.file_doc + "seller_user.csv",
+                "review_path": self.file_doc + "review.csv",
+                "scrap_path": self.file_doc + "scrap.csv",
+                "product_path": self.file_doc + "product.csv",
+                "product_delivery_path": self.file_doc + "product_delivery.csv",
+                "delivery_method_path": self.file_doc + "delivery_method.csv",
+                "follow_path": self.file_doc + "follow.csv",
+                "cs_team_path": self.file_doc + "cs_team.csv",
+                "category_path": self.file_doc + "category.csv",
+                "brand_seller_path": self.file_doc + "brand_seller.csv",
+                "brand_path": self.file_doc + "brand.csv",
+            }
             self.user_table()
             self.seller_table()
             self.seller_user_table()
@@ -59,26 +64,28 @@ def requirement2(host, user, password):
             return result is not None
 
         def user_table(self):
-            exists = self.is_table_exists(table_name='user')
+            exists = self.is_table_exists(table_name="user")
             if exists:
                 return
             else:
-                self.cursor.execute("""
+                self.cursor.execute(
+                    """
                     CREATE TABLE IF NOT EXISTS user(
                     id INT(11) NOT NULL,
-                    nickname VARCHAR(255), 
-                    PRIMARY KEY (id)) ;               
-                                   """)
-                filepath = self.files['user_path']
+                    nickname VARCHAR(255),
+                    PRIMARY KEY (id)) ;
+                    """
+                )
+                filepath = self.files["user_path"]
 
-                with open(filepath, 'r', encoding='utf-8') as csv_data:
+                with open(filepath, "r", encoding="utf-8") as csv_data:
                     data_to_insert = []
                     for row in csv_data.readlines()[1:]:
-                        row = row.strip().split(',')
+                        row = row.strip().split(",")
                         formatted_row = []
 
                         for idx, data in enumerate(row):
-                            if data == '':
+                            if data == "":
                                 formatted_row.append(None)  # None을 사용하여 NULL 대체
                             elif idx in [0]:
                                 formatted_row.append(int(data))
@@ -93,60 +100,66 @@ def requirement2(host, user, password):
                 return
 
         def seller_table(self):
-            exists = self.is_table_exists(table_name='seller')
+            exists = self.is_table_exists(table_name="seller")
             if exists:
                 return
             else:
-                self.cursor.execute("""
+                self.cursor.execute(
+                    """
                     CREATE TABLE IF NOT EXISTS seller(
                     id VARCHAR(255) NOT NULL,
                     Name VARCHAR(255),
                     address VARCHAR(255),
-                    PRIMARY KEY (id)) ;               
-                    """)
-                filepath = self.files['seller_path']
+                    PRIMARY KEY (id)) ;
+                    """
+                )
+                filepath = self.files["seller_path"]
 
-                with open(filepath, 'r', encoding='utf-8') as csv_data:
+                with open(filepath, "r", encoding="utf-8") as csv_data:
                     data_to_insert = []
                     for row in csv_data.readlines()[1:]:
-                        row = row.strip().split(',')
+                        row = row.strip().split(",")
                         formatted_row = []
 
                         for idx, data in enumerate(row):
-                            if data == '':
+                            if data == "":
                                 formatted_row.append(None)
                             else:
                                 formatted_row.append(data)
 
                         data_to_insert.append(tuple(formatted_row))
 
-                insert_query = "INSERT INTO seller (id, Name, address) VALUES (%s, %s, %s) ;"
+                insert_query = (
+                    "INSERT INTO seller (id, Name, address) VALUES (%s, %s, %s) ;"
+                )
                 self.cursor.executemany(insert_query, data_to_insert)
                 self.cnx.commit()
 
         def seller_user_table(self):
-            exists = self.is_table_exists(table_name='seller_user')
+            exists = self.is_table_exists(table_name="seller_user")
             if exists:
                 return
             else:
-                exists2 = self.is_table_exists(table_name='SELLER_USER_ID')
+                exists2 = self.is_table_exists(table_name="SELLER_USER_ID")
                 if exists2:
                     return
                 else:
-                    self.cursor.execute("""
+                    self.cursor.execute(
+                        """
                         CREATE TABLE IF NOT EXISTS SELLER_USER_ID (
                         SUIid INT(11) NOT NULL,
                         PRIMARY KEY (SUIid)) ;
-                        """)
-                    filepath = self.files['seller_user_path']
-                    with open(filepath, 'r', encoding='utf-8') as csv_data:
+                        """
+                    )
+                    filepath = self.files["seller_user_path"]
+                    with open(filepath, "r", encoding="utf-8") as csv_data:
                         data_to_insert = set()
                         for row in csv_data.readlines()[1:]:
-                            row = row.strip().split(',')
+                            row = row.strip().split(",")
                             formatted_row = []
 
                             for idx, data in enumerate(row):
-                                if data == '':
+                                if data == "":
                                     formatted_row.append(None)
                                 if idx in [0]:
                                     if int(data) in data_to_insert:
@@ -160,20 +173,22 @@ def requirement2(host, user, password):
                     self.cursor.executemany(insert_query, data_to_insert)
                     self.cnx.commit()
 
-                self.cursor.execute("""
+                self.cursor.execute(
+                    """
                         CREATE TABLE IF NOT EXISTS seller_user(
                         user_id INT(11) NOT NULL,
-                        seller_id VARCHAR(255) NOT NULL) ;               
-                        """)
-                filepath = self.files['seller_user_path']
-                with open(filepath, 'r', encoding='utf-8') as csv_data:
+                        seller_id VARCHAR(255) NOT NULL) ;
+                        """
+                )
+                filepath = self.files["seller_user_path"]
+                with open(filepath, "r", encoding="utf-8") as csv_data:
                     data_to_insert = []
                     for row in csv_data.readlines()[1:]:
-                        row = row.strip().split(',')
+                        row = row.strip().split(",")
                         formatted_row = []
 
                         for idx, data in enumerate(row):
-                            if data == '':
+                            if data == "":
                                 formatted_row.append(None)
                             elif idx in [0]:
                                 formatted_row.append(int(data))
@@ -182,7 +197,9 @@ def requirement2(host, user, password):
 
                         data_to_insert.append(tuple(formatted_row))
 
-                insert_query = "INSERT INTO seller_user (user_id, seller_id) VALUES (%s, %s) ;"
+                insert_query = (
+                    "INSERT INTO seller_user (user_id, seller_id) VALUES (%s, %s) ;"
+                )
                 self.cursor.executemany(insert_query, data_to_insert)
                 self.cnx.commit()
                 return
@@ -191,8 +208,6 @@ def requirement2(host, user, password):
 
     # TODO: WRITE CODE HERE
     cursor.close()
-
-
 
 
 # Requirement3: insert data
@@ -230,7 +245,7 @@ directory_in = ""
 
 requirement1(host=host, user=user, password=password)
 requirement2(host=host, user=user, password=password)
-'''
+"""
 requirement3(host=host, user=user, password=password, directory=directory_in)
 requirement4(host=host, user=user, password=password)
-print("Done!")'''
+print("Done!")"""
