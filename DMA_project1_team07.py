@@ -14,6 +14,10 @@ def requirement1(host, user, password):
     print("Creating schema...")
 
     # TODO: WRITE CODE HERE
+    # TODO: 삭제할 부분
+    cursor.execute("DROP DATABASE DMA_team07;")
+    cnx.commit()
+    # TODO: 삭제할 부분
     cursor.execute("CREATE DATABASE IF NOT EXISTS DMA_team07;")
     # TODO: WRITE CODE HERE
     cursor.close()
@@ -28,10 +32,6 @@ def requirement2(host, user, password):
 
     # TODO: WRITE CODE HERE
     cursor.execute("USE DMA_team07;")
-    # cursor.execute("DROP TABLE user")
-    # cursor.execute("DROP TABLE seller")
-    # cursor.execute("DROP TABLE seller_user")
-    # cnx.commit()
 
     # user
     cursor.execute(
@@ -119,9 +119,10 @@ def requirement3(host, user, password, directory):
         table_loader = TableLoader(file_name, integer_attribute_index_list, insert_sql)
         table_loader.load_data()
 
-    cursor.execute("SELECT * FROM seller;")
-    for row in cursor:
-        print(row)
+    # 잘 들어갔는지 테스트용
+    # cursor.execute("SELECT * FROM seller;")
+    # for row in cursor:
+    #     print(row)
 
     # TODO: WRITE CODE HERE
     cursor.close()
