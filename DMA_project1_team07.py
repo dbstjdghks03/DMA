@@ -218,17 +218,14 @@ def requirement3(host, user, password, directory):
             file_name,
             integer_attribute_index_list,
             float_attribute_index_list,
-            # datetime_attribute_index_list,
             insert_sql,
         ):
             self.file_path = directory + file_name
             self.integer_attribute_index_list = integer_attribute_index_list
             self.float_attribute_index_list = float_attribute_index_list
-            # self.datetime_attribute_index_list = datetime_attribute_index_list
             self.insert_sql = insert_sql
 
         def load_data(self):
-            # load data
             with open(self.file_path, "r", encoding="utf-8") as csv_data:
                 tuples_to_insert = []
                 count = 0
@@ -339,18 +336,8 @@ def requirement3(host, user, password, directory):
         ),
     ]
 
-    for (
-        file_name,
-        integer_attribute_index_list,
-        float_attribute_index_list,
-        insert_sql,
-    ) in insertion_data:
-        table_loader = TableLoader(
-            file_name,
-            integer_attribute_index_list,
-            float_attribute_index_list,
-            insert_sql,
-        )
+    for data in insertion_data:
+        table_loader = TableLoader(*data)
         table_loader.load_data()
 
     # 잘 들어갔는지 테스트용
