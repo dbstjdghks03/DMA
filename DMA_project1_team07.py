@@ -14,10 +14,6 @@ def requirement1(host, user, password):
     print("Creating schema...")
 
     # TODO: WRITE CODE HERE
-    # TODO: 삭제할 부분
-    cursor.execute("DROP DATABASE DMA_team07;")
-    cnx.commit()
-    # TODO: 삭제할 부분
     cursor.execute("CREATE DATABASE IF NOT EXISTS DMA_team07;")
     # TODO: WRITE CODE HERE
     cursor.close()
@@ -243,35 +239,45 @@ def requirement3(host, user, password, directory):
                         else:
                             formatted_row.append(data)
 
-                    # cursor.execute(self.insert_sql, tuple(formatted_row))
-
                     tuples_to_insert.append(tuple(formatted_row))
+                    # tuples_top_insert가 10만 개 쌓일 때마다 executemany해준다
                     count += 1
-                    if count % 1000 == 0:
+                    if count % 100000 == 0:
                         cursor.executemany(self.insert_sql, tuples_to_insert)
+                        # executemany 후 초기화
                         tuples_to_insert = []
+                        count = 0
                         cnx.commit()
+                # 남은 tuples_to_insert도 마저 executemany해준다
+                if count != 0:
+                    cursor.executemany(self.insert_sql, tuples_to_insert)
+                    cnx.commit()
 
     insertion_data = [
-        ("user.csv", [0], [], "INSERT INTO user (id, nickname) VALUES (%s, %s);"),
+        (
+            "user.csv",
+            [0],
+            [],
+            "INSERT ignore INTO user (id, nickname) VALUES (%s, %s);",
+        ),
         (
             "seller.csv",
             [],
             [],
-            "INSERT INTO seller (id, Name, address) VALUES (%s, %s, %s);",
+            "INSERT ignore INTO seller (id, Name, address) VALUES (%s, %s, %s);",
         ),
         (
             "seller_user.csv",
             [0],
             [],
-            "INSERT INTO seller_user (user_id, seller_id) VALUES (%s, %s);",
+            "INSERT ignore INTO seller_user (user_id, seller_id) VALUES (%s, %s);",
         ),
         (
             "review.csv",
             [0, 1, 2],
             [5, 6, 7, 8, 9],
             """
-            INSERT INTO review (id, product_id, user_id, created_at, comment, overall_rating,
+            INSERT ignore INTO review (id, product_id, user_id, created_at, comment, overall_rating,
             cost_rating, delivery_rating, design_rating, durability_rating)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
             """,
@@ -280,13 +286,13 @@ def requirement3(host, user, password, directory):
             "scrap.csv",
             [0, 1],
             [],
-            "INSERT INTO scrap (user_id, product_id) VALUES (%s, %s);",
+            "INSERT ignore INTO scrap (user_id, product_id) VALUES (%s, %s);",
         ),
         (
             "product.csv",
             [0, 2, 3, 4, 5, 6, 7],
             [],
-            """INSERT INTO product (id, name, selling_price, original_price, refund_fee, exchange_fee,
+            """INSERT ignore INTO product (id, name, selling_price, original_price, refund_fee, exchange_fee,
             brand_id, category_id, seller_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
             """,
         ),
@@ -294,7 +300,7 @@ def requirement3(host, user, password, directory):
             "product_delivery.csv",
             [0, 1, 2, 3, 4],
             [],
-            """INSERT INTO product_delivery (product_id, delivery_method_id,
+            """INSERT ignore INTO product_delivery (product_id, delivery_method_id,
             is_free_delivery, is_overseas_purchase, is_departure_today)
             VALUES (%s, %s, %s, %s, %s);""",
         ),
@@ -302,48 +308,43 @@ def requirement3(host, user, password, directory):
             "delivery_method.csv",
             [0],
             [],
-            "INSERT INTO delivery_method (id, name) VALUES (%s, %s);",
+            "INSERT ignore INTO delivery_method (id, name) VALUES (%s, %s);",
         ),
         (
             "follow.csv",
             [0, 1],
             [],
-            "INSERT INTO follow (follower_id, followee_id) VALUES (%s, %s);",
+            "INSERT ignore INTO follow (follower_id, followee_id) VALUES (%s, %s);",
         ),
         (
             "cs_team.csv",
             [],
             [],
-            "INSERT INTO cs_team (seller_id, cs_phone, email) VALUES (%s, %s, %s);",
+            "INSERT ignore INTO cs_team (seller_id, cs_phone, email) VALUES (%s, %s, %s);",
         ),
         (
             "category.csv",
             [0],
             [],
-            "INSERT INTO category (id, name) VALUES (%s, %s);",
+            "INSERT ignore INTO category (id, name) VALUES (%s, %s);",
         ),
         (
             "brand_seller.csv",
             [0],
             [],
-            "INSERT INTO brand_seller (brand_id, seller_id) VALUES (%s, %s);",
+            "INSERT ignore INTO brand_seller (brand_id, seller_id) VALUES (%s, %s);",
         ),
         (
             "brand.csv",
             [0],
             [],
-            "INSERT INTO brand (id, name) VALUES (%s, %s);",
+            "INSERT ignore INTO brand (id, name) VALUES (%s, %s);",
         ),
     ]
 
     for data in insertion_data:
         table_loader = TableLoader(*data)
         table_loader.load_data()
-
-    # 잘 들어갔는지 테스트용
-    # cursor.execute("SELECT * FROM review;")
-    # for row in cursor:
-    #     print(row)
 
     # TODO: WRITE CODE HERE
     cursor.close()
@@ -357,6 +358,30 @@ def requirement4(host, user, password):
     print("Adding constraints...")
 
     # TODO: WRITE CODE HERE
+    cursor.execute("USE DMA_team07;")
+
+    alter_sql = "ALTER TABLE %s ADD CONSTRAINT FOREIGN KEY (%s) REFERENCES %s;"
+    foreign_key_constraint_data = [
+        ("seller_user", "user_id", "user(id)"),
+        ("seller_user", "seller_id", "seller(id)"),
+        ("review", "product_id", "product(id)"),
+        ("review", "user_id", "user(id)"),
+        ("scrap", "user_id", "user(id)"),
+        ("scrap", "product_id", "product(id)"),
+        ("product", "brand_id", "brand(id)"),
+        ("product", "category_id", "category(id)"),
+        ("product", "seller_id", "seller(id)"),
+        ("product_delivery", "product_id", "product(id)"),
+        ("product_delivery", "delivery_method_id", "delivery_method(id)"),
+        ("follow", "follower_id", "user(id)"),
+        ("follow", "followee_id", "user(id)"),
+        ("cs_team", "seller_id", "seller(id)"),
+        ("brand_seller", "brand_id", "brand(id)"),
+        ("brand_seller", "seller_id", "seller(id)"),
+    ]
+    for data in foreign_key_constraint_data:
+        cursor.execute(alter_sql % data)
+    cnx.commit()
 
     # TODO: WRITE CODE HERE
     cursor.close()
@@ -372,5 +397,5 @@ directory_in = "./Project1_dataset/"
 requirement1(host=host, user=user, password=password)
 requirement2(host=host, user=user, password=password)
 requirement3(host=host, user=user, password=password, directory=directory_in)
-# requirement4(host=host, user=user, password=password)
-# print("Done!")
+requirement4(host=host, user=user, password=password)
+print("Done!")
