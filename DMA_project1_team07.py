@@ -34,25 +34,23 @@ def requirement2(host, user, password):
         """
         CREATE TABLE IF NOT EXISTS user(
             id INT(11) NOT NULL,
-            nickname VARCHAR(255),
+            nickname VARCHAR(255) NOT NULL,
             PRIMARY KEY (id)
         );
         """
     )
-    # 데이터상 nickname도 not null이긴 함
 
     # seller
     cursor.execute(
         """
         CREATE TABLE IF NOT EXISTS seller(
             id VARCHAR(255) NOT NULL,
-            name VARCHAR(255),
-            address VARCHAR(255),
+            name VARCHAR(255) NOT NULL,
+            address VARCHAR(255) NOT NULL,
             PRIMARY KEY (id)
         );
         """
     )
-    # 데이터상 다 not null
 
     # seller_user
     cursor.execute(
@@ -64,7 +62,6 @@ def requirement2(host, user, password):
         );
         """
     )
-    # 데이터상 다 not null
 
     # review
     cursor.execute(
@@ -73,13 +70,13 @@ def requirement2(host, user, password):
             id INT(11) NOT NULL,
             product_id INT(11) NOT NULL,
             user_id INT(11) NOT NULL,
-            created_at DATETIME,
-            comment VARCHAR(255),
-            overall_rating DECIMAL(11),
-            cost_rating DECIMAL(11),
-            delivery_rating DECIMAL(11),
-            design_rating DECIMAL(11),
-            durability_rating DECIMAL(11),
+            created_at DATETIME NOT NULL,
+            comment VARCHAR(255) NOT NULL,
+            overall_rating DECIMAL(11) NOT NULL,
+            cost_rating DECIMAL(11) NOT NULL,
+            delivery_rating DECIMAL(11) NOT NULL,
+            design_rating DECIMAL(11) NOT NULL,
+            durability_rating DECIMAL(11) NOT NULL,
             PRIMARY KEY (id)
         );
         """
@@ -101,14 +98,14 @@ def requirement2(host, user, password):
         """
         CREATE TABLE IF NOT EXISTS product(
             id INT(11) NOT NULL,
-            name VARCHAR(255),
-            selling_price INT(11),
-            original_price INT(11),
-            refund_fee INT(11),
-            exchange_fee INT(11),
-            brand_id INT(11),
-            category_id INT(11),
-            seller_id VARCHAR(255),
+            name VARCHAR(255) NOT NULL,
+            selling_price INT(11) NOT NULL,
+            original_price INT(11) NOT NULL,
+            refund_fee INT(11) NOT NULL,
+            exchange_fee INT(11) NOT NULL,
+            brand_id INT(11) NOT NULL,
+            category_id INT(11) NOT NULL,
+            seller_id VARCHAR(255) NOT NULL,
             PRIMARY KEY (id)
         );
         """
@@ -120,9 +117,9 @@ def requirement2(host, user, password):
         CREATE TABLE IF NOT EXISTS product_delivery(
             product_id INT(11) NOT NULL,
             delivery_method_id INT(11) NOT NULL,
-            is_free_delivery TINYINT(1),
-            is_overseas_purchase TINYINT(1),
-            is_departure_today TINYINT(1),
+            is_free_delivery TINYINT(1) NOT NULL,
+            is_overseas_purchase TINYINT(1) NOT NULL,
+            is_departure_today TINYINT(1) NOT NULL,
             PRIMARY KEY(product_id, delivery_method_id)
         );
         """
@@ -133,7 +130,7 @@ def requirement2(host, user, password):
         """
         CREATE TABLE IF NOT EXISTS delivery_method(
             id INT(11) NOT NULL,
-            name VARCHAR(255),
+            name VARCHAR(255) NOT NULL,
             PRIMARY KEY (id)
         );
         """
@@ -155,8 +152,8 @@ def requirement2(host, user, password):
         """
         CREATE TABLE IF NOT EXISTS cs_team(
             seller_id VARCHAR(255) NOT NULL,
-            cs_phone VARCHAR(255),
-            email VARCHAR(255),
+            cs_phone VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
             PRIMARY KEY (seller_id, cs_phone, email)
         );
         """
@@ -167,7 +164,7 @@ def requirement2(host, user, password):
         """
         CREATE TABLE IF NOT EXISTS category(
             id INT(11) NOT NULL,
-            name VARCHAR(255),
+            name VARCHAR(255) NOT NULL,
             PRIMARY KEY (id)
         );
         """
@@ -188,7 +185,7 @@ def requirement2(host, user, password):
         """
         CREATE TABLE IF NOT EXISTS brand(
             id INT(11) NOT NULL,
-            name VARCHAR(255),
+            name VARCHAR(255) NOT NULL,
             PRIMARY KEY (id)
         );
         """
