@@ -362,6 +362,19 @@ def requirement4(host, user, password):
         ("seller_user", "user_id", "user(id)"),
         ("seller_user", "seller_id", "seller(id)"),
         ("review", "product_id", "product(id)"),
+        ("review", "user_id", "user(id)"),
+        ("scrap", "user_id", "user(id)"),
+        ("scrap", "product_id", "product(id)"),
+        ("product", "brand_id", "brand(id)"),
+        ("product", "category_id", "category(id)"),
+        ("product", "seller_id", "seller(id)"),
+        ("product_delivery", "product_id", "product(id)"),
+        ("product_delivery", "delivery_method_id", "delivery_method(id)"),
+        ("follow", "follower_id", "user(id)"),
+        ("follow", "followee_id", "user(id)"),
+        ("cs_team", "seller_id", "seller(id)"),
+        ("brand_seller", "brand_id", "brand(id)"),
+        ("brand_seller", "seller_id", "seller(id)"),
     ]
     for data in foreign_key_constraint_data:
         cursor.execute(alter_sql % data)
